@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA & Percentage Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #FFF9C4; /* Light Yellow */
+        }
+        .container {
+            background-color: #E3F2FD; /* Light Blue */
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+        }
+        input {
+            border: 2px solid #1976D2; /* Blue Border */
+            background-color: #BBDEFB; /* Light Blue */
+        }
+        button {
+            background-color: #1976D2; /* Dark Blue */
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1565C0; /* Slightly Darker Blue */
+        }
+        h2, h3 {
+            color: #0D47A1; /* Darker Blue */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>CGPA & Percentage Calculator</h2>
+        <label for="semesters">Enter number of semesters: </label>
+        <input type="number" id="semesters" min="1" required>
+        <button onclick="createInputs()">Submit</button>
+
+        <div id="sgpaInputs"></div>
+        <button id="calculateBtn" onclick="calculateCGPA()" style="display:none;">Calculate</button>
+
+        <h3 id="result"></h3>
+        <h3 id="percentage"></h3>
+    </div>
+
+    <script>
+        function createInputs() {
+            let num = document.getElementById("semesters").value;
+            let container = document.getElementById("sgpaInputs");
+            container.innerHTML = "";
+            
+            for (let i = 1; i <= num; i++) {
+                container.innerHTML += `<label>SGPA Semester ${i}: </label>
+                                        <input type="number" id="sgpa${i}" step="0.01" min="0" max="10" required><br>`;
+            }
+            
+            document.getElementById("calculateBtn").style.display = "block";
+        }
+
+        function calculateCGPA() {
+            let num = document.getElementById("semesters").value;
+            let total = 0;
+
+            for (let i = 1; i <= num; i++) {
+                let sgpa = parseFloat(document.getElementById(`sgpa${i}`).value);
+                if (isNaN(sgpa) || sgpa < 0 || sgpa > 10) {
+                    alert("Please enter valid SGPA values (0-10).");
+                    return;
+                }
+                total += sgpa;
+            }
+
+            let cgpa = total / num;
+            let percentage = cgpa * 10;
+
+            document.getElementById("result").innerHTML = `Your CGPA is: <b>${cgpa.toFixed(2)}</b>`;
+            document.getElementById("percentage").innerHTML = `Equivalent Percentage: <b>${percentage.toFixed(2)}%</b>`;
+        }
+    </script>
+
+</body>
+</html>
